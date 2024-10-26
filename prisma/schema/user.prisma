@@ -1,0 +1,16 @@
+enum UserStatus {
+  ACTIVE
+  DEACTIVATED
+}
+
+model User {
+  id            String            @id @default(uuid())
+  passwordAuth  UserPasswordAuth?
+  displayName   String
+  status        UserStatus        @default(ACTIVE)
+  refreshTokens RefreshToken[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@map("users")
+}
