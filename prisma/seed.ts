@@ -1,4 +1,5 @@
 import {
+  CategoryType,
   PrismaClient,
 } from '@prisma/client';
 
@@ -7,20 +8,58 @@ async function main() {
   await prisma.category.createMany({
     data: [
       {
-        name: 'Food',
-        description:'All about food.',
+        name: 'Rent/Mortgage',
+        description: 'Rent and Mortgage related expenses.',
+        type: CategoryType.EXPENSE,
       },
       {
-        name: 'Clothing',
-        description:'All about clothes.',
+        name: 'Utilities',
+        description: 'All about utilities like electricity, water etc',
+        type: CategoryType.EXPENSE,
       },
       {
-        name: 'Household',
-        description:'All about household.',
+        name: 'Car payment',
+        description: 'Car payment related expenses',
+        type: CategoryType.EXPENSE,
+      },
+      {
+        name: 'Auto insurance',
+        description: 'Auto insurance related expenses',
+        type: CategoryType.EXPENSE,
+      },
+      {
+        name: 'Health',
+        description:'All about health related expenses like medicines, healthcare etc',
+        type : CategoryType.EXPENSE,
+      },
+      {
+        name: 'Groceries',
+        description:'All about groceries related expenses like fruits, vegetables etc',
+        type : CategoryType.EXPENSE,
+      },
+      {
+        name: 'Entertainment',
+        description:'All about entertainment related expenses like movies, games etc',
+        type : CategoryType.EXPENSE,
       },
       {
         name: 'Transport',
-        description:'All about transport.',
+        description:'All about transport related expenses like bus, train etc',
+        type : CategoryType.EXPENSE,
+      },
+      {
+        name: 'Dining',
+        description:'All about dining related expenses like restaurants, hotels etc ',
+        type : CategoryType.EXPENSE,
+      },
+      {
+        name: 'Miscellaneous',
+        description:'All about miscellaneous expenses like gifts, loans etc ',
+        type : CategoryType.EXPENSE ,
+      },
+      {
+        name: 'Salary',
+        type : CategoryType.INCOME,
       }
     ],
   });
