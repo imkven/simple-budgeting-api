@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UpdateIncomeDto } from './dto/update-income.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -10,22 +10,9 @@ export class IncomesService {
   ) {}
   
   async create(userId: string, inputs: CreateIncomeDto) {
-    const { categoryId, date, description , amount } = inputs;
-    const category = await this.prismaService.category.findFirst({
-      where: {
-        id : categoryId,
-        OR: [
-          { userId },
-          { userId: null},
-        ],
-      },
-    });
-    if (!category) {
-      throw new NotFoundException('Category not found');
-    }
+    const { date, description , amount } = inputs;
     return this.prismaService.income.create({
       data: {
-        categoryId,
         userId,
         date,
         description,
@@ -44,9 +31,6 @@ export class IncomesService {
         description: true,
         amount: true,
         date: true,
-        category: {
-          select: { id : true, name: true },
-        },
       },
     });
   }
@@ -62,9 +46,6 @@ export class IncomesService {
         description: true,
         amount: true,
         date: true,
-        category: {
-          select: { id : true, name: true },
-        },
       },
     });
     if (!income) {
@@ -74,7 +55,6 @@ export class IncomesService {
   }
 
   async update(userId: string, id: string, inputs: UpdateIncomeDto) {
-    const { categoryId } = inputs;
     const income = await this.prismaService.income.findFirst({
       where: {
         id,
@@ -84,18 +64,6 @@ export class IncomesService {
     });
     if (!income) {
       throw new NotFoundException('No income record found');
-    }
-    const category = await this.prismaService.category.findFirst({
-      where: {
-        id : categoryId,
-        OR: [
-          { userId },
-          { userId: null},
-        ],
-      },
-    });
-    if (!category) {
-      throw new NotFoundException('Category not found');
     }
     return this.prismaService.income.update({
       where: { id },

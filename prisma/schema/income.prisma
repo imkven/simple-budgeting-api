@@ -1,7 +1,5 @@
 model Income {
   id          String   @id @default(uuid())
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  String
   user        User     @relation(fields: [userId], references: [id])
   userId      String
   description String?

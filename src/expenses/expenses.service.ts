@@ -74,7 +74,7 @@ export class ExpensesService {
     return expense;
   }
 
-  async update(userId: string, id: string, inputs: UpdateIncomeDto) {
+  async update(userId: string, id: string, inputs: UpdateExpenseDto) {
     const { categoryId } = inputs;
     const expense = await this.prismaService.expense.findFirst({
       where: {

@@ -6,6 +6,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { IncomesModule } from './incomes/incomes.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ExpensesModule } from './expenses/expenses.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ExpensesModule } from './expenses/expenses.module';
     IncomesModule,
     CategoriesModule,
     ExpensesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

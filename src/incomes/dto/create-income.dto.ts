@@ -2,10 +2,6 @@ import { IsDecimal, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { isValidJSONDateTime } from "src/validators";
 
 export class CreateIncomeDto {
-    @IsNotEmpty()
-    @IsString()
-    categoryId: string;
-
     @IsOptional()
     @IsString()
     description?: string;

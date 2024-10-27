@@ -7,10 +7,6 @@ async function main() {
   await prisma.category.createMany({
     data: [
       {
-        name: 'Salary',
-        description : 'All about salary.',
-      },
-      {
         name: 'Food',
         description:'All about food.',
       },
