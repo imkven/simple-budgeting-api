@@ -1,18 +1,20 @@
 enum CategoryType {
   INCOME
   EXPENSE
+  SAVING
 }
 
 model Category {
-  id          String       @id @default(uuid())
-  user        User?        @relation(fields: [userId], references: [id])
-  userId      String?
-  type        CategoryType
-  name        String
-  description String?
-  Expense     Expense[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id             String          @id @default(uuid())
+  user           User?           @relation(fields: [userId], references: [id])
+  userId         String?
+  type           CategoryType
+  name           String
+  description    String?
+  transactions   Transaction[]
+  categoryLimits CategoryLimit[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
   @@map("categories")
 }

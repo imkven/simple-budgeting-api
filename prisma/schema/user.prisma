@@ -4,16 +4,16 @@ enum UserStatus {
 }
 
 model User {
-  id            String            @id @default(uuid())
-  passwordAuth  UserPasswordAuth?
-  displayName   String
-  status        UserStatus        @default(ACTIVE)
-  refreshTokens RefreshToken[]
-  Category      Category[]
-  Income        Income[]
-  Expense       Expense[]
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
+  id             String            @id @default(uuid())
+  passwordAuth   UserPasswordAuth?
+  displayName    String
+  status         UserStatus        @default(ACTIVE)
+  refreshTokens  RefreshToken[]
+  categories     Category[]
+  transactions   Transaction[]
+  categoryLimits CategoryLimit[]
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
 
   @@map("users")
 }
