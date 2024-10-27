@@ -15,7 +15,7 @@ export class IncomesController {
   constructor(private readonly incomesService: IncomesService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a income record.' })
+  @ApiOperation({ summary: 'Create income record.' })
   async create(@Auth() { userId }: TokenPayload, @Body() inputs: CreateIncomeDto) {
     const data = await this.incomesService.create(userId, inputs);
     return okResponse(data);
@@ -29,7 +29,7 @@ export class IncomesController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get a income record.' })
+  @ApiOperation({ summary: 'Get income record.' })
   async findOne(@Auth() { userId }: TokenPayload, @Param('id') id: string) {
     const data = await this.incomesService.findOne(userId, id);
     return okResponse(data);

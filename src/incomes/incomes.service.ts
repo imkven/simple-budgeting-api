@@ -74,7 +74,7 @@ export class IncomesService {
   }
 
   async update(userId: string, id: string, inputs: UpdateIncomeDto) {
-    const { categoryId, date, description , amount } = inputs;
+    const { categoryId } = inputs;
     const income = await this.prismaService.income.findFirst({
       where: {
         id,
