@@ -9,6 +9,9 @@ model User {
   displayName   String
   status        UserStatus        @default(ACTIVE)
   refreshTokens RefreshToken[]
+  Category      Category[]
+  Income        Income[]
+  Expense       Expense[]
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
 

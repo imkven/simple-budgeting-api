@@ -2,12 +2,11 @@ import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { User } from '@prisma/client';
-import { ok, TokenPayload } from '../handy';
+import { okResponse, TokenPayload } from '../handy';
 import { LoginDto, LogoutDto, RefreshTokenDto, RegisterDto } from './dto';
 import { AuthGuard } from './auth.guard';
 import { Auth } from './ auth.decorator';
 
-@ApiBearerAuth()
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -19,7 +18,7 @@ export class AuthController {
     @Body() registerDto: RegisterDto,
   ): Promise<{ data: User; }> {
     const data = await this.authService.register(registerDto);
-    return ok(data);
+    return okResponse(data);
   }
 
   @Post('login')
@@ -28,21 +27,22 @@ export class AuthController {
     @Body() loginDto: LoginDto,
   ): Promise<{ data: { accessToken: string; refreshToken: string } }> {
     const data = await this.authService.login(loginDto);
-    return ok(data);
+    return okResponse(data); 
   }
-
+  
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Post('logout')
   @ApiOperation({ summary: 'Logout.' })
   async logout(@Body() logoutDto: LogoutDto, @Auth() tokenPayload: TokenPayload): Promise<{ data: { logout: number } }> {
     const data = await this.authService.logout(logoutDto, tokenPayload);
-    return ok(data);
+    return okResponse(data);
   }
 
   @Post('refresh-token')
   @ApiOperation({ summary: 'Getting a new access token.' })
   async refreshToken(@Body() refreshTokenDto: RefreshTokenDto): Promise<{ data: { accessToken: string; } }> {
     const data = await this.authService.refreshToken(refreshTokenDto);
-    return ok(data);
+    return okResponse(data);
   }
 }

@@ -20,31 +20,37 @@ import { PrismaService } from 'src/prisma/prisma.service';
         throw new UnauthorizedException();
       }
 
-      const payload = await verifyAccessToken(token);
-      console.log('payload', payload);
-      if (!payload) {
-        throw new UnauthorizedException('Invalid token');
+      try {
+        const payload = await verifyAccessToken(token);
+        if (!payload) {
+          throw new UnauthorizedException('Invalid token');
+        }
+
+        const decodedPayload = decodePayload(payload.sub);
+
+        const { rth, userId } = decodedPayload;
+        if (!rth || !userId) {
+          throw new UnauthorizedException('Invalid token');
+        }
+
+        const refreshToken = await this.prismaService.refreshToken.findFirst({
+          where: {
+            userId,
+            hash: rth,
+            expiresAt: { gt: new Date() },
+          },
+        });
+        if (!refreshToken ) {
+          throw new UnauthorizedException('Invalid token');
+        }
+
+        request['auth'] = decodedPayload;        
+      } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+          throw new UnauthorizedException('Token expired');
+        }
+        throw error;
       }
-
-      const decodedPayload = decodePayload(payload.sub);
-
-      const { rth, userId } = decodedPayload;
-      if (!rth || !userId) {
-        throw new UnauthorizedException('Invalid token');
-      }
-
-      const refreshToken = await this.prismaService.refreshToken.findFirst({
-        where: {
-          userId,
-          hash: rth,
-          expiresAt: { gt: new Date() },
-        },
-      });
-      if (!refreshToken ) {
-        throw new UnauthorizedException('Invalid token');
-      }
-
-      request['auth'] = decodedPayload;
 
       return true;
     }

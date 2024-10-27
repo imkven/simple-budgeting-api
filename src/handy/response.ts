@@ -1,3 +1,3 @@
-export function ok(data: any, extra: any = {}) {
+export function okResponse(data: any, extra: any = {}) {
     return { ok: true, data, ...extra };
 }

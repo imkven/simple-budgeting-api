@@ -1,0 +1,13 @@
+model Category {
+  id          String    @id @default(uuid())
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      String?
+  name        String
+  description String?
+  Income      Income[]
+  Expense     Expense[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("categories")
+}
