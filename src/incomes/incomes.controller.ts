@@ -1,34 +1,51 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
 import { IncomesService } from './incomes.service';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UpdateIncomeDto } from './dto/update-income.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { okResponse, TokenPayload } from 'src/handy';
+import { Auth } from 'src/auth/ auth.decorator';
 
+@ApiTags('incomes')
+@ApiBearerAuth()
+@UseGuards(AuthGuard)
 @Controller('incomes')
 export class IncomesController {
   constructor(private readonly incomesService: IncomesService) {}
 
   @Post()
-  create(@Body() createIncomeDto: CreateIncomeDto) {
-    return this.incomesService.create(createIncomeDto);
+  @ApiOperation({ summary: 'Create a income record.' })
+  async create(@Auth() { userId }: TokenPayload, @Body() inputs: CreateIncomeDto) {
+    const data = await this.incomesService.create(userId, inputs);
+    return okResponse(data);
   }
 
   @Get()
-  findAll() {
-    return this.incomesService.findAll();
+  @ApiOperation({ summary: 'Get all income records.' })
+  async findAll(@Auth() { userId }: TokenPayload) {
+    const data = await this.incomesService.findAll(userId);
+    return okResponse(data);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.incomesService.findOne(+id);
+  @ApiOperation({ summary: 'Get a income record.' })
+  async findOne(@Auth() { userId }: TokenPayload, @Param('id') id: string) {
+    const data = await this.incomesService.findOne(userId, id);
+    return okResponse(data);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateIncomeDto: UpdateIncomeDto) {
-    return this.incomesService.update(+id, updateIncomeDto);
+  @Put(':id')
+  @ApiOperation({ summary: 'Update income record.' })
+  async update(@Auth() { userId }: TokenPayload, @Param('id') id: string, @Body() inputs: UpdateIncomeDto) {
+    const data = await this.incomesService.update(userId, id, inputs);
+    return okResponse(data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.incomesService.remove(+id);
+  @ApiOperation({ summary: 'Delete income record.' })
+  async delete(@Auth() { userId }: TokenPayload, @Param('id') id: string) {
+    const data = await this.incomesService.delete(userId, id);
+    return okResponse(data);
   }
 }

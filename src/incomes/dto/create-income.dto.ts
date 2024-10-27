@@ -1,17 +1,18 @@
+import { IsDecimal, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { isValidJSONDateTime } from "src/validators";
+
 export class CreateIncomeDto {
-    // @IsNotEmpty()
-    // @IsString()
-    // name: string;
+    @IsNotEmpty()
+    @IsString()
+    categoryId: string;
 
-    // @IsOptional()
-    // @IsString()
-    // description?: string;
+    @IsOptional()
+    @IsString()
+    description?: string;
 
-    // @IsOptional()
-    // @IsDecimal({ force_decimal: true, decimal_digits: '1,2' })
-    // monthlyIncomeBudget?: number;
+    @IsDecimal({ force_decimal: true, decimal_digits: '1,2' })
+    amount: number;
 
-    // @IsOptional()
-    // @IsDecimal({ force_decimal: true, decimal_digits: '1,2' })
-    // monthlyExpenseBudget?: number;
+    @isValidJSONDateTime()
+    date: Date;
 }

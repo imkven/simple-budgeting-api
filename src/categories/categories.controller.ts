@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { okResponse, TokenPayload } from 'src/handy';
 import { Auth } from 'src/auth/ auth.decorator';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
-
+@ApiTags('categories')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller('categories')
@@ -22,7 +22,7 @@ export class CategoriesController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update the category.' })
+  @ApiOperation({ summary: 'Update category.' })
   async update(@Auth() tokenPayload: TokenPayload, @Param('id') id: string, @Body() inputs: UpdateCategoryDto) {
     const data = await  this.categoriesService.update(tokenPayload.userId, id, inputs);
     return okResponse(data);
@@ -43,8 +43,8 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Deletes a category.' })
-  async delete(@Auth() tokenPayload: TokenPayload, @Param('id') id: string, @Res() res: Response) {
+  @ApiOperation({ summary: 'Delete category.' })
+  async delete(@Auth() tokenPayload: TokenPayload, @Param('id') id: string) {
     const data = await this.categoriesService.delete(tokenPayload.userId, id);
     return okResponse(data);
   }
